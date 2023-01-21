@@ -136,7 +136,7 @@ PassengerId,Survived,Pclass,Name,Sex,Age,SibSp,Parch,Ticket,Fare,Cabin,Embarked
 135,0,2,"Sobey, Mr. Samuel James Hayden",male,25,0,0,C.A. 29178,13,,S
 136,0,2,"Richard, Mr. Emile",male,23,0,0,SC/PARIS 2133,15.0458,,C
 137,1,1,"Newsom, Miss. Helen Monypeny",female,19,0,2,11752,26.2833,D47,S
-138,0,1,"Futrelle, Mr. Jacques Heath",male,37,1,0,113803,53.1,C123,S
+138,0,1,"Futrelle, Mr. Jacques Heath",male,37,1,0,113803,53.1,C123,S 
 139,0,3,"Osen, Mr. Olaf Elon",male,16,0,0,7534,9.2167,,S
 140,0,1,"Giglio, Mr. Victor",male,24,0,0,PC 17593,79.2,B86,C
 141,0,3,"Boulos, Mrs. Joseph (Sultana)",female,,0,2,2678,15.2458,,C
