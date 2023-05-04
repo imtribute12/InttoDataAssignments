@@ -1,0 +1,61 @@
+org 100h
+
+.data 
+
+sayilar db "$$$$$$$$"
+bosluk db 0,0,0,0,0,0
+birler db 0,0,0,0,0,0,0,0
+
+.code
+mov di,0h
+mov bp,offset sayilar   
+add bp, 2
+
+mov cx,8
+
+write:   
+    lea dx, sayilar
+    mov ah, 09h
+    int 21h  
+    
+readInput:
+    mov ah, 0AH
+    int 21h
+     
+gez:                        ;say dongusune atmak icin var
+    mov al,[bp][di]  
+    mov [bp][di], al
+    mov ah,0                
+    mov dx,cx               ;cx i kaybetmemek ici
+    mov cx,16               ;bit sayisindan fazla olmali|shift sayisi
+
+say:
+    dec cx                  
+    cmp cx,0
+    je exit                 ;sonsuza gitmemek icin kontrol
+    shr al,1 
+    jnc dis
+    jc dis
+    inc cx
+    inc ah                  ;1'lerin sayisini tutuyor
+    cmp cx,0                ;0 olursa cikar kontrol ediyorz
+    jne dis
+    loop say
+        
+dis:  
+   mov dl, "*"
+   mov ah, 02H
+   int 21H 
+
+   mov cx, 8   
+   mov bp,offset sayilar 
+   add bp, 9
+   loopy1:
+     mov dl, [bp]
+     mov ah, 02H
+     int 21H   
+     dec bp 
+     loop loopy1  
+    
+exit:
+ret
