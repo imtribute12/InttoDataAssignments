@@ -1,4 +1,4 @@
---PART1
+--PART1 
 --Q1 There are four coding errors in the following statement. Identify and list them.
 SELECT employee_id, last_name, salary * 12 as annual_salary
 FROM employees;
