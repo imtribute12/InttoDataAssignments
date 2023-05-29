@@ -1,5 +1,9 @@
 #include <Wire.h>
 #include <MPU6050.h>
+#include <LiquidCrystal_I2C.h> // LCD kütüphanesi
+
+// LCD Screen
+LiquidCrystal_I2C lcd(0x27, 16, 2); // Address and location informations
 
 // MPU-6050 accelerometer object
 MPU6050 mpu;
@@ -14,6 +18,12 @@ unsigned long prevTime = 0;
 void setup() {
   // Initialize serial communication
   Serial.begin(9600);
+  
+  // Initialize LCD Screen
+  lcd.begin(16, 2);
+  lcd.print("Acceleration");
+  lcd.setCursor(0, 1);
+  lcd.print("Position");
 
   // Initialize MPU-6050 accelerometer
   Wire.begin();
@@ -67,6 +77,23 @@ void loop() {
   Serial.print("Position Z: ");
   Serial.print(positionZ, 2);
   Serial.println(" m");
+  
+  // Print accelerometer values and position to LCD
+  lcd.setCursor(0, 0);
+  lcd.print("X:");
+  lcd.print(gForceX, 2);
+  lcd.print(" Y:");
+  lcd.print(gForceY, 2);
+  lcd.print(" Z:");
+  lcd.print(gForceZ, 2);
+
+  lcd.setCursor(0, 1);
+  lcd.print("X:");
+  lcd.print(positionX, 2);
+  lcd.print(" Y:");
+  lcd.print(positionY, 2);
+  lcd.print(" Z:");
+  lcd.print(positionZ, 2);
 
   delay(500);
 }
