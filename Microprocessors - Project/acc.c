@@ -1,9 +1,9 @@
 #include <Wire.h>
 #include <MPU6050.h>
-#include <LiquidCrystal_I2C.h> // LCD kütüphanesi
+#include <LiquidCrystal.h> // LCD kütüphanesi
 
 // LCD Screen
-LiquidCrystal_I2C lcd(0x27, 16, 2); // Address and location informations
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2); // Address and location informations
 
 // MPU-6050 accelerometer object
 MPU6050 mpu;
