@@ -21,9 +21,9 @@ void setup() {
   
   // Initialize LCD Screen
   lcd.begin(16, 2);
-  lcd.print("Acceleration");
+  lcd.print("hiz:");
   lcd.setCursor(0, 1);
-  lcd.print("Position");
+  lcd.print("konum:");
 
   // Initialize MPU-6050 accelerometer
   Wire.begin();
@@ -53,47 +53,21 @@ void loop() {
   positionY += (velocityY) / 2.0 * deltaTime;
   positionZ += (velocityZ) / 2.0 * deltaTime;
 
-  // Print accelerometer values and position to serial console
-  Serial.print("X: ");
-  Serial.print(gForceX, 2);
-  Serial.print(" g\t");
+  Serial.print("Hiz: ");
+  Serial.print(velocityX, 2);
+  Serial.print(" m/s\t");
 
-  Serial.print("Y: ");
-  Serial.print(gForceY, 2);
-  Serial.print(" g\t");
-
-  Serial.print("Z: ");
-  Serial.print(gForceZ, 2);
-  Serial.println(" g");
-
-  Serial.print("Position X: ");
+  Serial.print("Konum: ");
   Serial.print(positionX, 2);
-  Serial.print(" m\t");
-
-  Serial.print("Position Y: ");
-  Serial.print(positionY, 2);
-  Serial.print(" m\t");
-
-  Serial.print("Position Z: ");
-  Serial.print(positionZ, 2);
   Serial.println(" m");
-  
-  // Print accelerometer values and position to LCD
-  lcd.setCursor(0, 0);
-  lcd.print("X:");
-  lcd.print(gForceX, 2);
-  lcd.print(" Y:");
-  lcd.print(gForceY, 2);
-  lcd.print(" Z:");
-  lcd.print(gForceZ, 2);
 
-  lcd.setCursor(0, 1);
-  lcd.print("X:");
+  lcd.setCursor(4, 0);
+  lcd.print(velocityX, 2);
+  lcd.print(" m/s");
+
+  lcd.setCursor(7, 1);
   lcd.print(positionX, 2);
-  lcd.print(" Y:");
-  lcd.print(positionY, 2);
-  lcd.print(" Z:");
-  lcd.print(positionZ, 2);
+  lcd.print(" m");
 
   delay(500);
 }
