@@ -1,73 +1,72 @@
 #include <Wire.h>
 #include <MPU6050.h>
-#include <LiquidCrystal.h> // LCD kütüphanesi
+#include <LiquidCrystal.h>
 
-// LCD Screen
-LiquidCrystal lcd(12, 11, 5, 4, 3, 2); // Address and location informations
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
-// MPU-6050 accelerometer object
 MPU6050 mpu;
 
-// Measurement variables
 int16_t accelX, accelY, accelZ;
-float gForceX, gForceY, gForceZ;
-float velocityX = 0.0, velocityY = 0.0, velocityZ = 0.0;
-float positionX = 0.0, positionY = 0.0, positionZ = 0.0;
+float gForceX;
+float velocityX = 0.0, prevVelocityX;
+float positionX = 0.0;
+
 unsigned long prevTime = 0;
 
 void setup() {
-  // Initialize serial communication
   Serial.begin(9600);
-  
-  // Initialize LCD Screen
-  lcd.begin(16, 2);
-  lcd.print("hiz:");
-  lcd.setCursor(0, 1);
-  lcd.print("konum:");
 
-  // Initialize MPU-6050 accelerometer
+  lcd.begin(16, 2);
+  lcd.print("Hiz:");
+  lcd.setCursor(0, 1);
+  lcd.print("Konum:");
+
   Wire.begin();
+
   mpu.initialize();
 }
 
 void loop() {
-  // Read accelerometer data from MPU-6050
-  mpu.getAcceleration(&accelX, &accelY, &accelZ);
-
-  // Convert accelerometer data to g-force
+  mpu.getAcceleration(&accelX,  &accelY, &accelZ);
   gForceX = accelX / 16384.0;
-  gForceY = accelY / 16384.0;
-  gForceZ = accelZ / 16384.0;
 
-  // Calculate time difference since last iteration
   unsigned long currentTime = millis();
-  float deltaTime = (currentTime - prevTime) / 1000.0; // Convert to seconds
+  float deltaTime = (currentTime - prevTime) / 1000.0;
 
-  // Calculate velocity using the trapezoidal rule (numerical integration)
-  velocityX += (gForceX) / 2.0 * deltaTime;
-  velocityY += (gForceY) / 2.0 * deltaTime;
-  velocityZ += (gForceZ) / 2.0 * deltaTime;
+  velocityX += (gForceX) * deltaTime;
 
-  // Calculate position using the trapezoidal rule (numerical integration)
-  positionX += (velocityX) / 2.0 * deltaTime;
-  positionY += (velocityY) / 2.0 * deltaTime;
-  positionZ += (velocityZ) / 2.0 * deltaTime;
+  prevVelocityX = velocityX;
+  prevTime = currentTime;
 
-  Serial.print("Hiz: ");
+  positionX += simpsonsRule(velocityX, prevVelocityX, deltaTime);
+
+  Serial.print("Ivme X: ");
+  Serial.print(gForceX, 2);
+  Serial.print(" g\t");
+
+  Serial.print("Hiz X: ");
   Serial.print(velocityX, 2);
   Serial.print(" m/s\t");
 
-  Serial.print("Konum: ");
+  Serial.print("Konum X: ");
   Serial.print(positionX, 2);
-  Serial.println(" m");
+  Serial.print(" m\n");
 
   lcd.setCursor(4, 0);
   lcd.print(velocityX, 2);
   lcd.print(" m/s");
 
-  lcd.setCursor(7, 1);
+  lcd.setCursor(6, 1);
   lcd.print(positionX, 2);
   lcd.print(" m");
 
-  delay(500);
+  delay(1000);
+
+}
+
+// Simpson Kuralı ile konum hesaplama fonksiyonu
+float simpsonsRule(float currentVelocity, float previousVelocity, float deltaTime) {
+  float averageVelocity = (currentVelocity + previousVelocity) / 2.0;
+  float positionChange = averageVelocity * deltaTime;
+  return positionChange;
 }
