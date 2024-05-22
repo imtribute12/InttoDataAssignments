@@ -1,4 +1,4 @@
-# Fourth Assignments
+# Third Assignments
 
 Gazi Üniversitesi Bilgisayar Mühendisliği Bölümü 3. sınıf kodlama ödevleri için oluşturulmuştur.
 
